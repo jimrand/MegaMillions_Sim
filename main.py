@@ -93,6 +93,7 @@ class MegaMillions:
         """
         white_matches = len(set(ticket[0]) & set(winning_numbers[0]))
         mega_matches = ticket[1] == winning_numbers[1]
+        # todo: add prize structure based on official Mega Millions rules
 
         # Prize structure based on official Mega Millions rules
         prize_structure = {
