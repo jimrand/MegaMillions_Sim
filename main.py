@@ -95,35 +95,28 @@ class MegaMillions:
         mega_matches = ticket[1] == winning_numbers[1]
 
         # Prize structure based on official Mega Millions rules
-        if white_matches == 5 and mega_matches:
-            return 1_000_000_000  # Jackpot
-        elif white_matches == 5:
-            return 1_000_000
-        elif white_matches == 4 and mega_matches:
-            return 10_000
-        elif white_matches == 4:
-            return 500
-        elif white_matches == 3 and mega_matches:
-            return 200
-        elif white_matches == 3:
-            return 10
-        elif white_matches == 2 and mega_matches:
-            return 10
-        elif white_matches == 1 and mega_matches:
-            return 4
-        elif mega_matches:
-            return 2
-        return 0
+        prize_structure = {
+            (5, True): 1_000_000_000,  # Jackpot
+            (5, False): 1_000_000,
+            (4, True): 10_000,
+            (4, False): 500,
+            (3, True): 200,
+            (3, False): 10,
+            (2, True): 10,
+            (1, True): 4,
+            (0, True): 2,
+        }
+        return prize_structure.get((white_matches, mega_matches), 0)
 
     @staticmethod
     def get_match_description(ticket: TicketNumbers, winning_numbers: TicketNumbers) -> str:
         """
         Generate a human-readable description of how the ticket matched.
-        
+
         Args:
             ticket: The player's ticket numbers
             winning_numbers: The winning numbers for the draw
-            
+
         Returns:
             String describing the matches (e.g., "3 numbers + Mega Ball")
         """
@@ -141,7 +134,7 @@ class MegaMillions:
 def initialize_win_summary() -> WinSummary:
     """
     Initialize the win summary with default values and official odds.
-    
+
     Returns:
         Dictionary mapping prize tiers to their WinData objects
     """
@@ -161,7 +154,7 @@ def initialize_win_summary() -> WinSummary:
 def print_summary(num_tickets: int, total_spent: float, total_won: int) -> None:
     """
     Print a summary of the simulation results.
-    
+
     Args:
         num_tickets: Number of tickets played
         total_spent: Total money spent on tickets
@@ -178,7 +171,7 @@ def print_summary(num_tickets: int, total_spent: float, total_won: int) -> None:
 def print_probability_analysis(win_summary: WinSummary, num_tickets: int) -> None:
     """
     Print statistical analysis comparing actual vs expected wins.
-    
+
     Args:
         win_summary: Dictionary containing win data for each prize tier
         num_tickets: Number of tickets played
@@ -195,7 +188,7 @@ def print_probability_analysis(win_summary: WinSummary, num_tickets: int) -> Non
 def _print_probability_row(match_type: str, data: WinData, num_tickets: int) -> None:
     """
     Print a single row of probability analysis.
-    
+
     Args:
         match_type: Type of win being analyzed
         data: Win statistics for this match type
@@ -220,7 +213,7 @@ def _print_probability_row(match_type: str, data: WinData, num_tickets: int) -> 
 def main() -> None:
     """
     Run the Mega Millions simulation.
-    
+
     Generates random tickets, checks for wins, and displays results
     with statistical analysis.
     """
